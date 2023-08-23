@@ -1,21 +1,24 @@
----
-name: Checks
+name: Checks  # Name of the workflow
 
-on: [push]
+on: [push]  # Trigger the workflow on push events to the main branch
 
 jobs:
-  test-lint:
-    name: Test and Lint
-    runs-on: ubuntu-20.04
+  test-lint:  # Name of the job
+    name: Test and Lint  # Descriptive name for the job
+    runs-on: ubuntu-20.04  # Specify the runner environment
+
     steps:
-      - name: Login to the Docker Hub
-        uses: docker/login-action@v1
+      - name: Login to the Docker Hub  # Step name
+        uses: docker/login-action@v1  # Use a Docker action to log in to Docker Hub
         with:
-          username: ${{secrets.DOCKERHUB_USER}}
-          password: ${{secrets.DOCKERHUB_TOKEN}}
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Test
-        run: docker-compose run --rm app sh -c "python manage.py test"
-      - name: Lint
-        run: docker-compose run --rm app sh -c "flake8"
+          username: ${{secrets.DOCKERHUB_USER}}  # Use Docker Hub username from secrets
+          password: ${{secrets.DOCKERHUB_TOKEN}}  # Use Docker Hub password from secrets
+
+      - name: Checkout  # Step name
+        uses: actions/checkout@v2  # Use the checkout action to fetch the repository code
+
+      - name: Test  # Step name
+        run: docker-compose run --rm app sh -c "python manage.py test"  # Run Django tests
+
+      - name: Lint  # Step name
+        run: docker-compose run --rm app sh -c "flake8"  # Run flake8 linter
